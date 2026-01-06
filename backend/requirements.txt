@@ -3,3 +3,6 @@ uvicorn
 pandas
 python-multipart
 pydantic
+numpy
+scipy
+pytest

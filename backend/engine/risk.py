@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Any
 import numpy as np
 
 class RiskAnalyzer:
@@ -25,6 +25,73 @@ class RiskAnalyzer:
             sensitivity[key] = (new_val - base_val) / base_val
             
         return sensitivity
+
+    def calculate_breakpoints(self, engine, base_inputs: Dict[str, float], threshold: float = 0.0) -> Dict[str, float]:
+        """
+        Calculates at what value of each input the output metric crosses the threshold (break-even).
+        Assumes linear relationship for simplicity (or uses Newton-Raphson if complex, but here linear is fine).
+        """
+        baseline_res = engine.run_deterministic(base_inputs)
+        base_val = baseline_res['cash_flow']
+
+        breakpoints = {}
+        for key in ['revenue', 'operational_costs', 'marketing_spend']:
+            if key not in base_inputs: continue
+
+            # Simple linear extrapolation: y = mx + c
+            # We have point 1: (x1, y1) = (base_input, base_val)
+            # We need to find x where y = threshold.
+
+            # Let's find slope 'm' by perturbing.
+            x1 = base_inputs[key]
+            y1 = base_val
+
+            # Perturb +1% for slope calculation
+            delta_x = x1 * 0.01 if x1 != 0 else 1.0
+            new_inputs = base_inputs.copy()
+            new_inputs[key] = x1 + delta_x
+
+            new_res = engine.run_deterministic(new_inputs)
+            y2 = new_res['cash_flow']
+
+            slope = (y2 - y1) / delta_x
+
+            if slope == 0:
+                breakpoints[key] = float('inf') # No impact
+            else:
+                # y - y1 = m(x - x1)
+                # threshold - y1 = m(x - x1)
+                # (threshold - y1)/m = x - x1
+                # x = x1 + (threshold - y1)/m
+                x_break = x1 + (threshold - y1) / slope
+                breakpoints[key] = x_break
+
+        return breakpoints
+
+    def run_stress_test(self, engine, base_inputs: Dict[str, float]) -> Dict[str, Any]:
+        """
+        Runs predefined stress scenarios (e.g., 'Recession', 'Supply Shock').
+        """
+        scenarios = {
+            "Recession": {"revenue": 0.8}, # -20% Revenue
+            "Inflation": {"operational_costs": 1.15}, # +15% Costs
+            "Aggressive Growth": {"marketing_spend": 1.5, "revenue": 1.2} # +50% Spend, +20% Revenue
+        }
+
+        results = {}
+        for name, modifiers in scenarios.items():
+            # Apply modifiers
+            scenario_inputs = base_inputs.copy()
+            for key, multiplier in modifiers.items():
+                if key in scenario_inputs:
+                    scenario_inputs[key] *= multiplier
+
+            res = engine.run_deterministic(scenario_inputs)
+            results[name] = {
+                "inputs": scenario_inputs,
+                "cash_flow": res["cash_flow"]
+            }
+        return results
 
     def prob_of_failure(self, monte_carlo_results: Dict[str, Any], threshold: float = 0.0) -> float:
         """
