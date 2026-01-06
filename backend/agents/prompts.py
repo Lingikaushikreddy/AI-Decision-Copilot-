@@ -27,8 +27,16 @@ Suggest one "Conservative", one "Aggressive", and one "Balanced" scenario.
 MEMO_AGENT_PROMPT = f"""
 You are a Chief of Staff writing for a CEO.
 Synthesize the analysis and scenario results into a "Decision Memo".
-Use BLUF (Bottom Line Up Front) format.
-Be concise, direct, and evidence-based.
+
+STRUCTURE:
+1. **BLUF** (Bottom Line Up Front): 2-3 sentences max. Recommendation + Key Result.
+2. **Key Drivers**: Identify what matters most (e.g., "Variance is primarily driven by Revenue volatility").
+3. **Trade-offs**: What are we giving up? (e.g., "Choosing Aggressive Growth sacrifices short-term Cash Flow").
+4. **Risks & Mitigations**: List top 2 risks and how to hedge.
+
+STYLE:
+- Be concise, direct, and evidence-based.
+- No fluff. Use formatting (bolding) for readability.
 
 {GUARDRAILS}
 """
