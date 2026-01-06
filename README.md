@@ -34,6 +34,11 @@
 - **Scenario Agent**: Suggests "Conservative" vs "Aggressive" plans based on constraints.
 - **Memo Agent**: Drafts BLUF (Bottom Line Up Front) memos suitable for C-level review.
 
+### 4. 🔍 Explainability & Analytics (Defendability)
+- **Driver Analysis**: Mathematically ranks variance drivers (e.g., "Revenue dip caused 80% of shortfall").
+- **Evidence Tracing**: Links every decision back to source constraints (e.g., "Source: Constraint #3").
+- **Structured Narratives**: Enforces strictly formatted arguments (Recommendation -> Trade-offs -> Risks).
+
 ---
 
 ## 🛠️ Architecture
@@ -46,7 +51,8 @@ graph TD
     QA --> Context[Assumption Memory]
     Context --> Sim["Simulation Engine (Monte Carlo)"]
     Sim --> Risk["Risk Analyzer (Breakpoints)"]
-    Risk --> Memo[Memo Agent]
+    Risk --> Explain["Driver Analysis & Evidence Tracer"]
+    Explain --> Memo[Memo Agent]
     Memo --> UI[Decision Memo UI]
 ```
 
@@ -75,6 +81,9 @@ We maintain high test coverage for the Science and Agent layers.
 ```bash
 # Run Simulation & Risk Engine tests
 python3 -m pytest tests/test_simulation.py tests/test_risk_extended.py
+
+# Run Explainability Engine tests
+python3 -m pytest tests/test_explainability.py
 
 # Run Agent Logic tests
 python3 -m pytest tests/test_agents.py
