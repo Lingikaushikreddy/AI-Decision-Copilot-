@@ -108,13 +108,24 @@ graph TD
     *   **Convergence**: Verified that Monte Carlo P50 aligns with Deterministic Mean via `tests/test_simulation.py`.
 *   **Risk Analysis**: Implemented `RiskAnalyzer` for One-At-A-Time (OAT) sensitivity scoring.
 
-### 17. GitHub Repository
+### 17. Engine Advancements (PR Replication)
+*   **Source**: Replicated high-value logic from PR `jules/simulation-risk-engine`.
+*   **Features Added**:
+    *   **Break-even Analysis**: Calculates exact revenue drop required to hit $0 cash flow.
+    *   **Stress Testing**: Pre-defined scenarios (Recession, Inflation) for instantaneous risk checking.
+    *   **Constraint Enforcement**: `SimulationEngine` now respects hard limits (e.g. Budget Caps) during calculation.
+*   **Verification**: Added `tests/test_risk_extended.py` covering all new financial logic (3/3 passed).
+
+### 18. Explainability & Analytics (Defendability Layer)
+*   **Driver Analysis**: Implemented `DriverAnalyzer` to mathematically rank which factors drive the most variance (e.g., "Revenue is the #1 driver of risk").
+*   **Evidence Tracing**: Built `EvidenceTracer` to link outputs back to specific constraints (e.g., "Source: Budget Cap").
+*   **Narrative Structure**: Updated `MEMO_AGENT_PROMPT` to enforce a strictly structured argument (BLUF -> Trade-offs -> Risks).
+*   **Verification**: Verified driver ranking and bridge chart data generation via `tests/test_explainability.py`.
+
+### 19. GitHub Repository
 The complete source code and documentation have been pushed to:
 **[https://github.com/Lingikaushikreddy/AI-Decision-Copilot-](https://github.com/Lingikaushikreddy/AI-Decision-Copilot-.git)**
 
-
 ## Verification
-*   **Completeness**: Address Product, Domain, UX, Backend, Data, AI, and Science requirements.
-*   **Consistency**: The Agent layer consumes the "Data Health" signal (Data Eng) and powers the "Smart Questions" and "Scenario Builder" UI components (Frontend), effectively closing the loop on the architecture.
-
-
+*   **Completeness**: Address Product, Domain, UX, Backend, Data, AI, Science, and Explainability requirements.
+*   **Consistency**: The "Defendability Layer" ensures that the "Decision Memo" is not just generated text, but a structured argument backed by mathematical drivers (from the Science Layer) and specific constraints (from Memory).

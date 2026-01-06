@@ -91,10 +91,24 @@ Create a comprehensive set of product documents for the "AI Decision Copilot" fo
     return results.to_dict()
     ```
 
+### Explainability & Analytics (Defendability Layer)
+#### [NEW] `backend/engine/explainability.py`
+- **`DriverAnalyzer`**:
+    - **Top Contributors**: Rank inputs by their impact on variance (using `RiskAnalyzer` sensitivity).
+    - **Bridge Chart Logic**: Generate data for a "waterfall" explanation (Baseline -> Volume Effect -> Price Effect -> Result).
+- **`EvidenceTracer`**:
+    - A lightweight utility to format "Citation" objects linking back to specific input fields or constraints (e.g., "Source: Constraint #3 (Budget Cap)").
+
+#### [MODIFY] `backend/agents/prompts.py`
+- Update `MEMO_AGENT_PROMPT` to explicitly request specific sections: "Trade-offs", "Key Risks", "Mitigations".
+- Feed `DriverAnalyzer` outputs into the prompt context so the LLM can write: "The main driver of risk is *Marketing Spend*..."
+
 ## Verification Plan
 ### Automated Tests
 - `pytest` for API endpoint validation (ingest, scenario calculation).
 - `tests/test_simulation.py`: Verify statistical correctness (e.g., Mean of Monte Carlo ~ Deterministic Mean).
+- `tests/test_explainability.py`: Verify that drivers are correctly ranked and evidence links are generated.
+
 
 - `tests/test_agents.py`: Mock LLM responses to verify orchestration logic (e.g., ensure QuestioningAgent is triggered when Data Health < 80).
 - Run `npm run build` to verify clean frontend build.

@@ -48,3 +48,8 @@
     - [x] Implement Monte Carlo Simulation (Uncertainty) <!-- id: 44 -->
     - [x] Implement Risk Analysis (Sensitivity & Breakpoints) <!-- id: 45 -->
     - [x] Integrate Engine with Workflow Service <!-- id: 46 -->
+- [x] Build Explainability & Analytics Engine (Defendability Layer) <!-- id: 47 -->
+    - [x] Implement Driver Analysis (Top Contributors) <!-- id: 48 -->
+    - [x] Build Evidence Tracer (Source Links) <!-- id: 49 -->
+    - [x] Create Narrative Templates (Trade-offs & Risks) <!-- id: 50 -->
+    - [x] Implement KPI Monitor List Generator <!-- id: 51 -->
