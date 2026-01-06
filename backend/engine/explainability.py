@@ -176,3 +176,73 @@ class NarrativeGenerator:
                 tradeoffs.append(f"However, it requires {k} to be {v} (vs {runner_inputs[k]}).")
 
         return tradeoffs
+
+class MemoGenerator:
+    def __init__(self):
+        self.narrative_gen = NarrativeGenerator()
+        self.tracer = EvidenceTracer()
+        self.driver_analyzer = DriverAnalyzer()
+
+    def create_memo(self,
+                    simulation_results: Dict[str, Any],
+                    driver_analysis: List[Dict[str, Any]],
+                    scenarios: Dict[str, Any] = None,
+                    sensitivity_data: Dict[str, float] = None,
+                    target_metric: str = "cash_flow",
+                    tracing_threshold: float = 0.1,
+                    segment_separator: str = "::") -> Dict[str, Any]:
+        """
+        Aggregates analysis into an executive memo structure.
+
+        sensitivity_data: Raw sensitivity data for tracing impact and segment analysis.
+        target_metric: The primary metric being optimized (default: cash_flow).
+        tracing_threshold: Sensitivity threshold for inclusion in impact tracing.
+        segment_separator: Separator used for hierarchical keys in segment analysis.
+        """
+        # Extract key metrics
+        mean_val = simulation_results.get("mean", 0)
+        p10 = simulation_results.get("p10", 0)
+        p90 = simulation_results.get("p90", 0)
+
+        # Generate Narratives
+        recommendation = self.narrative_gen.generate_recommendation(driver_analysis, metric=target_metric)
+
+        prob_failure = simulation_results.get("prob_failure", 0.0)
+
+        top_drivers = [d['name'] for d in driver_analysis[:3]]
+        risk_text = self.narrative_gen.generate_risk_assessment(
+            prob_failure,
+            top_drivers
+        )
+
+        tradeoffs = []
+        if scenarios:
+             tradeoffs = self.narrative_gen.generate_tradeoffs(scenarios, metric=target_metric)
+
+        # Evidence Tracing
+        impact_evidence = []
+        segment_impacts = []
+        if sensitivity_data:
+            impact_evidence = self.tracer.trace_impact(sensitivity_data, threshold=tracing_threshold)
+            segment_impacts = self.driver_analyzer.analyze_segment_drivers(sensitivity_data, separator=segment_separator)
+
+        return {
+            "title": "AI Decision Copilot: Executive Summary",
+            "metrics": {
+                "expected_outcome": mean_val,
+                "upside_case": p90,
+                "downside_case": p10,
+                "prob_failure": prob_failure,
+                "target_metric": target_metric
+            },
+            "narrative": {
+                "recommendation": recommendation,
+                "risk_assessment": risk_text,
+                "trade_offs": tradeoffs
+            },
+            "evidence": {
+                "top_drivers": driver_analysis[:3],
+                "impact_tracing": impact_evidence,
+                "segment_impacts": segment_impacts[:3] # Top 3 segments
+            }
+        }
