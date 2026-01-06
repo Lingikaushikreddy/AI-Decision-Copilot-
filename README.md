@@ -35,7 +35,8 @@
 - **Memo Agent**: Drafts BLUF (Bottom Line Up Front) memos suitable for C-level review.
 
 ### 4. 🔍 Explainability & Analytics (Defendability)
-- **Driver Analysis**: Mathematically ranks variance drivers (e.g., "Revenue dip caused 80% of shortfall").
+- **Segmented Driver Analysis**: Drills down into hierarchy (e.g., "North vs South" revenue impact).
+- **Math-Backed Narratives**: Auto-generates recommendations and trade-offs before LLM polishing to prevent hallucinations.
 - **Evidence Tracing**: Links every decision back to source constraints (e.g., "Source: Constraint #3").
 - **Structured Narratives**: Enforces strictly formatted arguments (Recommendation -> Trade-offs -> Risks).
 
