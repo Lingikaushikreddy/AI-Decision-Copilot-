@@ -98,3 +98,15 @@ class EvidenceTracer:
         for i, (k, v) in enumerate(active_constraints.items()):
             citations.append(self.format_citation("Constraint", str(i+1), f"{k} <= {v}"))
         return citations
+
+    def trace_impact(self, sensitivity_data: Dict[str, float], threshold: float = 0.1) -> List[str]:
+        """
+        Traces inputs that have a sensitivity impact greater than threshold.
+        """
+        impactful_inputs = []
+        i = 1
+        for k, v in sensitivity_data.items():
+            if abs(v) >= threshold:
+                impactful_inputs.append(self.format_citation("Driver", str(i), f"{k} (Sensitivity: {v*100:.1f}%)"))
+                i += 1
+        return impactful_inputs
