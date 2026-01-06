@@ -40,12 +40,12 @@
 
 ```mermaid
 graph TD
-    User[User Upload] --> Ingest[Ingestion Service (Stream)]
-    Ingest --> Profile[Data Profiling & Health Score]
+    User[User Upload] --> Ingest["Ingestion Service (Stream)"]
+    Ingest --> Profile["Data Profiling & Health Score"]
     Profile --> QA[Questioning Agent]
     QA --> Context[Assumption Memory]
-    Context --> Sim[Simulation Engine (Monte Carlo)]
-    Sim --> Risk[Risk Analyzer (Breakpoints)]
+    Context --> Sim["Simulation Engine (Monte Carlo)"]
+    Sim --> Risk["Risk Analyzer (Breakpoints)"]
     Risk --> Memo[Memo Agent]
     Memo --> UI[Decision Memo UI]
 ```
