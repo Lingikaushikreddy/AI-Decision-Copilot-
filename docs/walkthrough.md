@@ -118,9 +118,11 @@ graph TD
 
 ### 18. Explainability & Analytics (Defendability Layer)
 *   **Driver Analysis**: Implemented `DriverAnalyzer` to mathematically rank which factors drive the most variance (e.g., "Revenue is the #1 driver of risk").
-*   **Evidence Tracing**: Built `EvidenceTracer` to link outputs back to specific constraints (e.g., "Source: Budget Cap").
-*   **Narrative Structure**: Updated `MEMO_AGENT_PROMPT` to enforce a strictly structured argument (BLUF -> Trade-offs -> Risks).
-*   **Verification**: Verified driver ranking and bridge chart data generation via `tests/test_explainability.py`.
+*   **Segmented Analysis**: Added `analyze_segment_drivers` to handle hierarchical data (e.g., "North vs South").
+*   **Evidence Tracing**: Built `EvidenceTracer` to link outputs back to specific constraints.
+*   **Math-Backed Narratives**: Implemented `NarrativeGenerator` to create hallucination-proof recommendations and trade-off texts.
+*   **Memo Generator**: Added `MemoGenerator` logic to orchestrate strict JSON outputs for the frontend.
+*   **Verification**: Verified all logic via `tests/test_explainability.py` and `tests/test_explainability_extended.py`.
 
 ### 19. GitHub Repository
 The complete source code and documentation have been pushed to:
