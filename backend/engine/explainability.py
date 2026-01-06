@@ -110,3 +110,69 @@ class EvidenceTracer:
                 impactful_inputs.append(self.format_citation("Driver", str(i), f"{k} (Sensitivity: {v*100:.1f}%)"))
                 i += 1
         return impactful_inputs
+
+class NarrativeGenerator:
+    def generate_recommendation(self, drivers: List[Dict[str, Any]], metric: str = "cash_flow") -> str:
+        """
+        Generates a text recommendation based on top drivers.
+        """
+        if not drivers:
+            return "No significant drivers identified to influence the outcome."
+
+        top_driver = drivers[0]
+        direction = "increase" if top_driver["direction"] == "Positive" else "decrease"
+
+        return (f"To improve {metric.replace('_', ' ')}, focus on {top_driver['name']}. "
+                f"It has the highest impact ({top_driver['magnitude']}), so efforts to {direction} it "
+                f"will yield the best returns.")
+
+    def generate_risk_assessment(self, prob_failure: float, sensitive_params: List[str]) -> str:
+        """
+        Generates a risk assessment summary.
+        """
+        risk_level = "Low"
+        if prob_failure > 0.5:
+            risk_level = "Critical"
+        elif prob_failure > 0.2:
+            risk_level = "High"
+        elif prob_failure > 0.1:
+            risk_level = "Moderate"
+
+        param_str = ", ".join(sensitive_params) if sensitive_params else "None"
+
+        return (f"Risk Level: {risk_level} (Probability of Failure: {prob_failure*100:.1f}%). "
+                f"Key risk drivers are: {param_str}.")
+
+    def generate_tradeoffs(self, scenarios: Dict[str, Any], metric: str = "cash_flow") -> List[str]:
+        """
+        Analyzes trade-offs between different scenarios regarding the target metric.
+        """
+        tradeoffs = []
+
+        # Helper to get metric value safely
+        def get_metric(s_data):
+            return s_data.get(metric, s_data.get("cash_flow", 0))
+
+        # Sort scenarios by metric
+        sorted_scenarios = sorted(scenarios.items(), key=lambda x: get_metric(x[1]), reverse=True)
+
+        if len(sorted_scenarios) < 2:
+            return ["Insufficient scenarios to determine trade-offs."]
+
+        best = sorted_scenarios[0]
+        runner_up = sorted_scenarios[1]
+
+        best_val = get_metric(best[1])
+        runner_up_val = get_metric(runner_up[1])
+
+        diff = best_val - runner_up_val
+
+        tradeoffs.append(f"Scenario '{best[0]}' yields ${diff:,.0f} more {metric.replace('_', ' ')} than '{runner_up[0]}'.")
+
+        # Check inputs to see what was traded
+        for k, v in best[1].get('inputs', {}).items():
+            runner_inputs = runner_up[1].get('inputs', {})
+            if k in runner_inputs and v != runner_inputs[k]:
+                tradeoffs.append(f"However, it requires {k} to be {v} (vs {runner_inputs[k]}).")
+
+        return tradeoffs
