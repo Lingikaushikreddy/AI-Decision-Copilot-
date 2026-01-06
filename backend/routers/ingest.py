@@ -6,7 +6,7 @@ router = APIRouter()
 service = IngestionService()
 
 class DataProfile(BaseModel):
-    filename: string
+    filename: str
     row_count: int
     health_score: int
     anomalies: list[str]

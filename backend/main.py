@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from backend.routers import ingest, workflow
+from backend.services.audit_service import audit_logger
 import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("audit_trail")
 
 app = FastAPI(title="AI Decision Copilot API", version="1.0.0")
 
@@ -19,5 +19,14 @@ async def health_check():
 @app.middleware("http")
 async def audit_middleware(request, call_next):
     response = await call_next(request)
-    logger.info(f"AUDIT: {request.method} {request.url} - Status: {response.status_code}")
+    # Log to audit file using the service
+    audit_logger.log_event(
+        user_id="system", # placeholder
+        action="HTTP_REQUEST",
+        details={
+            "method": request.method,
+            "url": str(request.url),
+            "status_code": response.status_code
+        }
+    )
     return response
