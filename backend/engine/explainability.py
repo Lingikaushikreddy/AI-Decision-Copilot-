@@ -20,6 +20,25 @@ class DriverAnalyzer:
         drivers.sort(key=lambda x: x["impact_score"], reverse=True)
         return drivers
 
+    def analyze_segment_drivers(self, sensitivity_data: Dict[str, float], separator: str = "::") -> List[Dict[str, Any]]:
+        """
+        Aggregates drivers by segment (prefix) if keys are hierarchical.
+        Example: 'North::Revenue' -> segment 'North'.
+        """
+        segments = {}
+        for key, impact in sensitivity_data.items():
+            if separator in key:
+                seg = key.split(separator)[0]
+                segments[seg] = segments.get(seg, 0) + abs(impact)
+            else:
+                # Treat non-segmented as their own segment
+                segments[key] = segments.get(key, 0) + abs(impact)
+
+        # Convert to list
+        results = [{"name": k, "total_impact": v} for k,v in segments.items()]
+        results.sort(key=lambda x: x["total_impact"], reverse=True)
+        return results
+
     def generate_bridge_data(self, baseline_val: float, scenario_val: float, drivers: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
         Generates data for a 'Bridge Chart' (Waterfall).
