@@ -23,8 +23,22 @@ class IngestionService:
                 # Excel is harder to stream, fallback to load (usually smaller than CSVs)
                 df = pd.read_excel(tmp_path)
                 return self._profile_dataframe(df, file.filename)
+        except pd.errors.EmptyDataError:
+             return {"filename": file.filename, "row_count": 0, "health_score": 0, "anomalies": ["Empty File"], "schema": {}}
         except Exception as e:
             logger.error(f"Error processing file: {str(e)}")
+            # If it's a parsing error that we can catch (like UnicodeDecodeError or ParserError),
+            # we might want to return a specific profile indicating failure, or re-raise.
+            # But the requirement is "Doesn't break".
+            if isinstance(e, (UnicodeDecodeError, pd.errors.ParserError)):
+                 # Return a "Broken File" profile
+                 return {
+                     "filename": file.filename,
+                     "row_count": 0,
+                     "health_score": 0,
+                     "anomalies": ["Unreadable file format or corrupted content"],
+                     "schema": {}
+                 }
             raise e
         finally:
             if os.path.exists(tmp_path):
