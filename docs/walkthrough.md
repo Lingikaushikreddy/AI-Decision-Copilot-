@@ -128,6 +128,13 @@ graph TD
 The complete source code and documentation have been pushed to:
 **[https://github.com/Lingikaushikreddy/AI-Decision-Copilot-](https://github.com/Lingikaushikreddy/AI-Decision-Copilot-.git)**
 
+### 20. QA & Reliability Hardening
+*   **Test Plan**: Defined "Messy Reality" strategy in `docs/TEST_PLAN.md`.
+*   **Ingestion Robustness**: Added tests for garbage inputs, broken dates, and empty files (`tests/test_ingestion_edge_cases.py`).
+*   **Integration Testing**: Verified end-to-end `Simulation -> Memo -> Audit` flow (`tests/test_workflow_integration.py`).
+*   **Audit Logging**: Implemented verifiable audit middleware.
+*   **Verification**: All new tests passed, ensuring the system doesn't crash on "real world" bad data.
+
 ## Verification
 *   **Completeness**: Address Product, Domain, UX, Backend, Data, AI, Science, and Explainability requirements.
 *   **Consistency**: The "Defendability Layer" ensures that the "Decision Memo" is not just generated text, but a structured argument backed by mathematical drivers (from the Science Layer) and specific constraints (from Memory).

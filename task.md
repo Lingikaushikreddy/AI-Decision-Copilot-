@@ -1,0 +1,60 @@
+# Tasks
+
+- [x] Define Product Strategy & PRD <!-- id: 0 -->
+    - [x] Define Target User & Use Cases <!-- id: 1 -->
+    - [x] Draft PRD (Inputs, Outputs, Non-goals) <!-- id: 2 -->
+    - [x] Define Success Metrics <!-- id: 3 -->
+- [x] Develop Roadmap <!-- id: 4 -->
+    - [x] Define MVP, V1, V2 <!-- id: 5 -->
+- [x] Create Supporting Artifacts <!-- id: 6 -->
+    - [x] User Stories <!-- id: 7 -->
+    - [x] Success Metrics Dashboard <!-- id: 8 -->
+- [x] Define Domain Logic & Constraints (SME) <!-- id: 9 -->
+    - [x] Define Decision Logic (Playbook) <!-- id: 10 -->
+    - [x] Define Real-world Constraints <!-- id: 11 -->
+    - [x] Define KPI & Metrics Logic <!-- id: 12 -->
+- [x] Design UX/UI & Workflows (Designer) <!-- id: 13 -->
+    - [x] Map User Journey <!-- id: 14 -->
+    - [x] Design Screen Specifications & Components <!-- id: 15 -->
+    - [x] Define Trust Cues & Usability Findings <!-- id: 16 -->
+    - [x] Generate UI Mockups <!-- id: 17 -->
+- [ ] Build Frontend UI (React) <!-- id: 18 -->
+    - [x] Initialize Vite Project & Tailwind <!-- id: 19 -->
+    - [x] Implement Upload & Profiling UI <!-- id: 20 -->
+    - [x] Implement Q&A & Smart Questions UI <!-- id: 21 -->
+    - [x] Implement Scenario Builder & Comparison UI <!-- id: 22 -->
+    - [x] Implement Decision Memo Output <!-- id: 23 -->
+- [x] Deploy to GitHub <!-- id: 24 -->
+    - [x] Initialize Repo & Push 15 Commits <!-- id: 25 -->
+- [ ] Build Backend API (Python/FastAPI) <!-- id: 26 -->
+    - [x] Initialize FastAPI Project <!-- id: 27 -->
+    - [x] Implement Ingestion & Profiling Service <!-- id: 28 -->
+    - [x] Implement Workflow & Decision APIs <!-- id: 29 -->
+    - [x] Implement Audit Trail & Observability <!-- id: 30 -->
+    - [x] Performance Fix: Stream Processing for Ingest (Resolved 54GB RAM spike) <!-- id: 99 -->
+- [x] Build Data Engineering Pipeline (ETL) <!-- id: 31 -->
+    - [x] Implement Advanced Profiling (Type Inference, Statistics) <!-- id: 32 -->
+    - [x] Build Auto-Clean Transformations (Dates, Currency) <!-- id: 33 -->
+    - [x] Generate Standard Decision Table Output <!-- id: 34 -->
+    - [x] Generate Data Confidence Report <!-- id: 35 -->
+- [ ] Build AI/ML Agents (LLM Layer) <!-- id: 36 -->
+    - [x] Design System Prompts & Guardrails <!-- id: 37 -->
+    - [x] Implement Questioning Agent (Ambiguity Detection) <!-- id: 38 -->
+    - [x] Implement Multi-Agent Orchestrator (LangGraph-style) <!-- id: 39 -->
+    - [x] Implement Assumption Memory & Context Store <!-- id: 40 -->
+    - [x] Build Evaluation Harness <!-- id: 41 -->
+- [x] Build Simulation & Decision Engine (Science Layer) <!-- id: 42 -->
+    - [x] Implement Deterministic Model (Baseline) <!-- id: 43 -->
+    - [x] Implement Monte Carlo Simulation (Uncertainty) <!-- id: 44 -->
+    - [x] Implement Risk Analysis (Sensitivity & Breakpoints) <!-- id: 45 -->
+    - [x] Integrate Engine with Workflow Service <!-- id: 46 -->
+- [x] Build Explainability & Analytics Engine (Defendability Layer) <!-- id: 47 -->
+    - [x] Implement Driver Analysis (Top Contributors) <!-- id: 48 -->
+    - [x] Build Evidence Tracer (Source Links) <!-- id: 49 -->
+    - [x] Create Narrative Templates (Trade-offs & Risks) <!-- id: 50 -->
+    - [x] Implement KPI Monitor List Generator <!-- id: 51 -->
+- [x] QA Engineering & Robustness (Messy Reality) <!-- id: 52 -->
+    - [x] Create Test Plan Artifact <!-- id: 53 -->
+    - [x] Implement "Messy Data" Ingestion Tests (Broken CSVs, Types) <!-- id: 54 -->
+    - [x] Validate Calculation Edge Cases (Divide by Zero, Negatives) <!-- id: 55 -->
+    - [x] Verify End-to-End Workflow with Mocked Agents <!-- id: 56 -->
