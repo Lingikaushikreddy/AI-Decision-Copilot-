@@ -56,3 +56,14 @@ class ETLPipeline:
                 report[col]["warnings"].append("Low data completeness")
                 
         return report
+
+    def validate_schema(self, df: pd.DataFrame, required_columns: List[str] = ["Revenue", "Costs"]) -> Dict[str, Any]:
+        """
+        Validates that the dataframe contains necessary columns for simulation.
+        """
+        missing = [col for col in required_columns if col not in df.columns]
+        
+        return {
+            "is_valid": len(missing) == 0,
+            "missing_columns": missing
+        }
