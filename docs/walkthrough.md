@@ -135,6 +135,12 @@ The complete source code and documentation have been pushed to:
 *   **Audit Logging**: Implemented verifiable audit middleware.
 *   **Verification**: All new tests passed, ensuring the system doesn't crash on "real world" bad data.
 
+### 21. Security & Compliance (Enterprise Ready)
+*   **Threat Model**: Conducted STRIDE analysis (`docs/ThreatModel.md`).
+*   **PII Masking**: Implemented `PIIScrubber` to redact emails, phones, and SSNs from uploads (`tests/test_security.py`).
+*   **Log Sanitization**: `LogSanitizer` removes sensitive keys (passwords, tokens) before logging to the audit trail.
+*   **Right to be Forgotten**: Added `DELETE /api/admin/data/{user_id}` for GDPR compliance.
+
 ## Verification
 *   **Completeness**: Address Product, Domain, UX, Backend, Data, AI, Science, and Explainability requirements.
 *   **Consistency**: The "Defendability Layer" ensures that the "Decision Memo" is not just generated text, but a structured argument backed by mathematical drivers (from the Science Layer) and specific constraints (from Memory).

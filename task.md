@@ -58,3 +58,8 @@
     - [x] Implement "Messy Data" Ingestion Tests (Broken CSVs, Types) <!-- id: 54 -->
     - [x] Validate Calculation Edge Cases (Divide by Zero, Negatives) <!-- id: 55 -->
     - [x] Verify End-to-End Workflow with Mocked Agents <!-- id: 56 -->
+- [x] Security & Compliance Hardening (Safe + Enterprise) <!-- id: 57 -->
+    - [x] Create Threat Model & Compliance Artifacts <!-- id: 58 -->
+    - [x] Implement PII Detection & Masking (Ingestion) <!-- id: 59 -->
+    - [x] Implement Data Retention & Deletion APIs <!-- id: 60 -->
+    - [x] Secure Audit Logs (Redact Sensitive Info) <!-- id: 61 -->
