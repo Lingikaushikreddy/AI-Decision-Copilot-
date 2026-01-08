@@ -1,0 +1,46 @@
+name: Operational Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        pip install pytest httpx pandas python-multipart
+        
+    - name: Run Unit Tests
+      run: |
+        pytest tests/
+        
+    - name: Security Audit (Bandit)
+      run: |
+        pip install bandit
+        bandit -r backend/ -f custom
+
+  build-and-push:
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker Image
+      run: docker build . --file Dockerfile --tag decision-copilot:latest
+      
+    # - name: Push to Registry (Mocked)
+    #   run: docker push registry.example.com/decision-copilot:latest
