@@ -141,6 +141,12 @@ The complete source code and documentation have been pushed to:
 *   **Log Sanitization**: `LogSanitizer` removes sensitive keys (passwords, tokens) before logging to the audit trail.
 *   **Right to be Forgotten**: Added `DELETE /api/admin/data/{user_id}` for GDPR compliance.
 
+### 22. MLOps & Platform (Deploy, Monitor, Scale)
+*   **Containerization**: `Dockerfile` for backend service + `docker-compose.yml` for local stack.
+*   **CI/CD**: GitHub Actions pipeline (`.github/workflows/ci-cd.yml`) for automated testing and security scanning.
+*   **Observability**: Implemented **Golden Signals** (Latency, Traffic, Errors) and **Token Tracking** via Prometheus middleware (`backend/services/monitoring.py`).
+*   **Runbook**: Release and Rollback procedures defined in `docs/RELEASE_RUNBOOK.md`.
+
 ## Verification
 *   **Completeness**: Address Product, Domain, UX, Backend, Data, AI, Science, and Explainability requirements.
 *   **Consistency**: The "Defendability Layer" ensures that the "Decision Memo" is not just generated text, but a structured argument backed by mathematical drivers (from the Science Layer) and specific constraints (from Memory).
