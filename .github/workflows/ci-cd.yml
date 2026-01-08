@@ -21,7 +21,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r backend/requirements.txt
-        pip install pytest httpx pandas python-multipart
+        pip install pytest httpx pandas python-multipart bandit
         
     - name: Run Unit Tests
       run: |
@@ -29,7 +29,6 @@ jobs:
         
     - name: Security Audit (Bandit)
       run: |
-        pip install bandit
         bandit -r backend/ -f custom
 
   build-and-push:
@@ -40,7 +39,11 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Build Docker Image
-      run: docker build . --file Dockerfile --tag decision-copilot:latest
+      run: |
+        docker build . --file Dockerfile --tag decision-copilot:latest
+        docker tag decision-copilot:latest decision-copilot:sha-${GITHUB_SHA}
       
     # - name: Push to Registry (Mocked)
-    #   run: docker push registry.example.com/decision-copilot:latest
+    #   run: |
+    #     docker push registry.example.com/decision-copilot:latest
+    #     docker push registry.example.com/decision-copilot:sha-${GITHUB_SHA}
