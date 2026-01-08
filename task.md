@@ -63,3 +63,8 @@
     - [x] Implement PII Detection & Masking (Ingestion) <!-- id: 59 -->
     - [x] Implement Data Retention & Deletion APIs <!-- id: 60 -->
     - [x] Secure Audit Logs (Redact Sensitive Info) <!-- id: 61 -->
+- [x] MLOps & Platform Engineering (Deploy & Monitor) <!-- id: 62 -->
+    - [x] Containerize Application (Docker) <!-- id: 63 -->
+    - [x] Implement CI/CD Pipeline (GitHub Actions) <!-- id: 64 -->
+    - [x] Build Observability & Metrics Service <!-- id: 65 -->
+    - [x] Create Model Versioning & Rollback Strategy <!-- id: 66 -->
