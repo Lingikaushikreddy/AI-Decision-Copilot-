@@ -30,7 +30,7 @@ jobs:
     - name: Security Audit (Bandit)
       run: |
         pip install bandit
-        bandit -r backend/ -f custom
+        bandit -r backend/ -f txt
 
   build-and-push:
     needs: quality-gate
