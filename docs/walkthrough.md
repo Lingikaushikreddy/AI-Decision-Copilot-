@@ -145,6 +145,8 @@ The complete source code and documentation have been pushed to:
 *   **Containerization**: `Dockerfile` for backend service + `docker-compose.yml` for local stack.
 *   **CI/CD**: GitHub Actions pipeline (`.github/workflows/ci-cd.yml`) for automated testing and security scanning.
 *   **Observability**: Implemented **Golden Signals** (Latency, Traffic, Errors) and **Token Tracking** via Prometheus middleware (`backend/services/monitoring.py`).
+*   **PromptOps**: Externalized prompts to `backend/config/prompts.yaml` for configuration-based management.
+*   **Operations**: Added `docs/OPERATIONS.md` for daily operational procedures.
 *   **Runbook**: Release and Rollback procedures defined in `docs/RELEASE_RUNBOOK.md`.
 
 ## Verification
