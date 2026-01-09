@@ -1,42 +1,52 @@
-# System Prompts & Guardrails
+import yaml
+import os
+import logging
 
-GUARDRAILS = """
-CRITICAL INSTRUCTIONS:
-1. NO HALLUCINATIONS: Do not invent data not present in the context.
-2. CITE SOURCES: If you make a claim, reference the specific data point or rule.
-3. ADMIT UNCERTAINTY: If you don't know, ask the user or state "Confidence Low".
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+DEFAULT_GUARDRAILS = """
+1. No Hallucinations.
+2. Cite Sources.
 """
 
-QUESTIONING_AGENT_PROMPT = f"""
-You are a Senior Strategic Analyst. Your goal is to identify ambiguity in financial/operational data.
-Given a dataset profile and a goal, generate 3-5 "Must-Ask" clarifying questions.
-Rank them by "Impact on Decision".
+class PromptRegistry:
+    def __init__(self, config_path="backend/config/prompts.yaml"):
+        self.config_path = config_path
+        self.prompts = {}
+        self.guardrails = DEFAULT_GUARDRAILS
+        self.load_prompts()
 
-{GUARDRAILS}
+    def load_prompts(self):
+        if not os.path.exists(self.config_path):
+            logger.warning(f"Prompt config not found at {self.config_path}. Using defaults/fallbacks.")
+            return
 
-Output Format: JSON list of objects {{ "question": str, "rationale": str, "impact_score": int }}
-"""
+        try:
+            with open(self.config_path, "r") as f:
+                data = yaml.safe_load(f)
 
-SCENARIO_AGENT_PROMPT = f"""
-You are a Financial Modeler. Your goal is to suggest realistic "What-If" scenarios based on constraints.
-Suggest one "Conservative", one "Aggressive", and one "Balanced" scenario.
+            self.guardrails = data.get("common", {}).get("guardrails", DEFAULT_GUARDRAILS)
 
-{GUARDRAILS}
-"""
+            for key, value in data.get("prompts", {}).items():
+                template = value.get("template", "")
+                # Inject guardrails if placeholder exists
+                if "{GUARDRAILS}" in template:
+                    template = template.format(GUARDRAILS=self.guardrails)
+                self.prompts[key] = template
 
-MEMO_AGENT_PROMPT = f"""
-You are a Chief of Staff writing for a CEO.
-Synthesize the analysis and scenario results into a "Decision Memo".
+        except Exception as e:
+            logger.error(f"Failed to load prompt config: {e}")
 
-STRUCTURE:
-1. **BLUF** (Bottom Line Up Front): 2-3 sentences max. Recommendation + Key Result.
-2. **Key Drivers**: Identify what matters most (e.g., "Variance is primarily driven by Revenue volatility").
-3. **Trade-offs**: What are we giving up? (e.g., "Choosing Aggressive Growth sacrifices short-term Cash Flow").
-4. **Risks & Mitigations**: List top 2 risks and how to hedge.
+    def get(self, key, default=None):
+        return self.prompts.get(key, default)
 
-STYLE:
-- Be concise, direct, and evidence-based.
-- No fluff. Use formatting (bolding) for readability.
+# Singleton instance
+registry = PromptRegistry()
 
-{GUARDRAILS}
-"""
+# Exposed constants for backward compatibility or direct usage
+GUARDRAILS = registry.guardrails
+QUESTIONING_AGENT_PROMPT = registry.get("questioning_agent", "Error: Prompt 'questioning_agent' not found.")
+SCENARIO_AGENT_PROMPT = registry.get("scenario_agent", "Error: Prompt 'scenario_agent' not found.")
+MEMO_AGENT_PROMPT = registry.get("memo_agent", "Error: Prompt 'memo_agent' not found.")
