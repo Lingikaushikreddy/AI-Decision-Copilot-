@@ -25,7 +25,7 @@ jobs:
         
     - name: Run Unit Tests
       run: |
-        pytest tests/
+        python -m pytest tests/
         
     - name: Security Audit (Bandit)
       run: |
