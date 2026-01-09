@@ -5,4 +5,3 @@ python-multipart
 pydantic
 prometheus_client
 pyyaml
-pytest-asyncio
