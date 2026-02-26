@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from backend.engine.simulation import SimulationEngine
 from backend.engine.risk import RiskAnalyzer
 
@@ -48,5 +49,5 @@ class WorkflowService:
             "confidence_score": "High (85%)",
             "bluf": "Based on the simulation, implementing this decision yields a positive ROI of 15% whilst preserving core operational capacity.",
             "trade_offs": ["Increased support wait times", "Slower regional expansion"],
-            "generated_at": "2024-10-24T14:30:00Z"
+            "generated_at": datetime.now(timezone.utc).isoformat()
         }
